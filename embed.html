@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Embedded Map</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/maplibre-gl@5.1.0/dist/maplibre-gl.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/maplibre-gl@5.1.0/dist/maplibre-gl.min.js"></script>
+    <style>
+        body { margin: 0; }
+        #map { width: 100vw; height: 100vh; }
+    </style>
+</head>
+<body>
+
+    <div id="map"></div>
+
+    <script>
+        // URLパラメータから座標、ズーム、ピッチを取得
+        const params = new URLSearchParams(window.location.search);
+        const lng = parseFloat(params.get("lng")) || 139.6917; // デフォルト東京
+        const lat = parseFloat(params.get("lat")) || 35.6895;
+        const zoom = parseFloat(params.get("zoom")) || 10;
+        const pitch = parseFloat(params.get("pitch")) || 0;
+        const bearing = parseFloat(params.get("bearing")) || 0;
+        
+        const map = new maplibregl.Map({
+            container: 'map',
+            style: 'osmfj_nopoi.json',
+            center: [lng, lat],
+            zoom: zoom,
+            pitch: pitch,
+            bearing: bearing
+        });
+
+        // ピンを固定
+        new maplibregl.Marker().setLngLat([lng, lat]).addTo(map);
+    </script>
+
+</body>
+</html>

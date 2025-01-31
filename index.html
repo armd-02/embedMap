@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>MapLibre Click to Embed</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/maplibre-gl@5.1.0/dist/maplibre-gl.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/maplibre-gl@5.1.0/dist/maplibre-gl.min.js"></script>
+	<style>
+		body {
+			margin: 0;
+			font-family: Arial, sans-serif;
+		}
+
+		#map {
+			width: 100vw;
+			height: 70vh;
+		}
+
+		#controls {
+			padding: 10px;
+			background: #f4f4f4;
+		}
+
+		label {
+			margin-right: 10px;
+		}
+
+		textarea {
+			width: 100%;
+			height: 60px;
+		}
+	</style>
+</head>
+
+<body>
+
+	<div id="map"></div>
+
+	<div id="controls">
+		<p>埋め込みコード:</p>
+		<textarea id="embedCode" readonly></textarea>
+	</div>
+
+	<script>
+		const map = new maplibregl.Map({
+			container: 'map',
+			style: 'osmfj_nopoi.json',
+			center: [139.6917, 35.6895], // 初期座標（東京）
+			zoom: 13,
+			pitch: 50
+		});
+
+		let marker = null; // 既存のマーカーを管理
+
+		map.on('click', function (e) {
+			const lng = e.lngLat.lng.toFixed(6);
+			const lat = e.lngLat.lat.toFixed(6);
+			const zoom = map.getZoom();
+			const pitch = map.getPitch();
+			const bearing = map.getBearing();
+
+			// 既存のマーカーを削除
+			if (marker) marker.remove();
+
+			// 新しいマーカーを追加
+			marker = new maplibregl.Marker().setLngLat([lng, lat]).addTo(map);
+
+			// iframeの埋め込みコードを生成（ズームとピッチを反映）
+			const embedUrl = `http://127.0.0.1:5500/embed.html?lng=${lng}&lat=${lat}&zoom=${zoom}&pitch=${pitch}&bearing=${bearing}`;
+			const embedCode = `<iframe src="${embedUrl}" width="100%" height="400" style="border:0;"></iframe>`;
+
+			document.getElementById('embedCode').value = embedCode.trim();
+		});
+	</script>
+
+</body>
+
+</html>
