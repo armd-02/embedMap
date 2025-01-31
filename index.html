@@ -68,7 +68,7 @@
 			marker = new maplibregl.Marker().setLngLat([lng, lat]).addTo(map);
 
 			// iframeの埋め込みコードを生成（ズームとピッチを反映）
-			const embedUrl = `http://127.0.0.1:5500/embed.html?lng=${lng}&lat=${lat}&zoom=${zoom}&pitch=${pitch}&bearing=${bearing}`;
+			const embedUrl = `https://armd-02.github.io/embedMap/embed.html?lng=${lng}&lat=${lat}&zoom=${zoom}&pitch=${pitch}&bearing=${bearing}`;
 			const embedCode = `<iframe src="${embedUrl}" width="100%" height="400" style="border:0;"></iframe>`;
 
 			document.getElementById('embedCode').value = embedCode.trim();
